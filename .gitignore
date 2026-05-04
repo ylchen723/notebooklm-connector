@@ -1,0 +1,17 @@
+# Environment files (use .env.example as the template)
+.env
+.env.local
+.env.*.local
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Local Python / Node debris (in case anyone runs tools in-tree)
+__pycache__/
+*.py[cod]
+node_modules/
+.venv/
+venv/
