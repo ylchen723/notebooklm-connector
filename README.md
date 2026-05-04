@@ -4,6 +4,21 @@
 
 **Codex 與 Claude Code 同等支援**，兩邊都有對應安裝路徑。
 
+## 為什麼做這個技能包
+
+「把一份資料做成自己的 AI 顧問」現在大致有三條主線：
+
+1. **最簡單**：直接把專案丟進 ChatGPT。
+2. **NotebookLM + Gemini**：NotebookLM 本身只負責「找」（記憶層，可以塞很多、找得到），思考分析靠 Gemini，兩者已連動。問題是 Gemini 目前在深度文件分析上偏弱。
+3. **本技能包這條**：用 **Claude / Codex 連 NotebookLM**。NotebookLM 當記憶層，Claude / Codex 負責推理與深度分析。
+
+但第 3 條有個現實成本：**資料量太大時，直接讓 Claude 連 NotebookLM 很燒 token**。所以實際工作流會分大小：
+
+- **少量資料**：Claude / Codex 直接讀 NotebookLM
+- **大量資料**（例如把一個 300 支影片的 YouTube 頻道全部用 ExportKit 加進 NotebookLM）：先用 **Codex 做前段清理**（拔紋、分類、上標籤、存進本地知識庫），再用 **Claude** 讀整理後的本地知識庫做深度分析
+
+換句話說，**NotebookLM 是記憶與檢索層，Codex 是清理層，Claude 是推理層**。本技能包做的事就是把「記憶層 ↔ 推理層」這一段橋接好，讓你在 Claude Code 或 Codex 對話裡可以直接呼叫到自己的 NotebookLM。
+
 ## 它能做什麼
 
 - 在 Codex / Claude Code 對話裡直接問你 NotebookLM 裡的內容
