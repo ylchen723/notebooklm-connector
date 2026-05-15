@@ -11,7 +11,7 @@
 這也是 `scripts/install.sh` 預設會幫你跑的指令：
 
 ```bash
-codex mcp add notebooklm -- npx -y notebooklm-mcp@latest
+codex mcp add notebooklm -- npx -y notebooklm-mcp@0.4.2
 ```
 
 驗證：
@@ -23,7 +23,7 @@ codex mcp list
 應該看到：
 
 ```
-notebooklm    npx    -y notebooklm-mcp@latest    ...    enabled
+notebooklm    npx    -y notebooklm-mcp@0.4.2    ...    enabled
 ```
 
 ### （進階）手動編輯 `~/.codex/config.toml`
@@ -33,7 +33,7 @@ notebooklm    npx    -y notebooklm-mcp@latest    ...    enabled
 ```toml
 [mcp_servers.notebooklm]
 command = "npx"
-args = ["-y", "notebooklm-mcp@latest"]
+args = ["-y", "notebooklm-mcp@0.4.2"]
 ```
 
 存檔後重開 Codex CLI（見下方「重啟說明」）。
@@ -61,7 +61,7 @@ cp ~/.claude/settings.json ~/.claude/settings.json.backup
   "mcpServers": {
     "notebooklm": {
       "command": "npx",
-      "args": ["-y", "notebooklm-mcp@latest"]
+      "args": ["-y", "notebooklm-mcp@0.4.2"]
     }
   }
 }
@@ -78,7 +78,7 @@ cp ~/.claude/settings.json ~/.claude/settings.json.backup
     },
     "notebooklm": {
       "command": "npx",
-      "args": ["-y", "notebooklm-mcp@latest"]
+      "args": ["-y", "notebooklm-mcp@0.4.2"]
     }
   }
 }
@@ -90,6 +90,45 @@ cp ~/.claude/settings.json ~/.claude/settings.json.backup
 - 改完可以貼到 [jsonlint.com](https://jsonlint.com/) 驗證語法
 
 存檔後重開 Claude Code（見下方「重啟說明」）。
+
+## Claude Desktop（手動編輯 claude_desktop_config.json）
+
+### 路徑
+
+- **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**：`%APPDATA%\Claude\claude_desktop_config.json`
+
+### 修改前先備份
+
+```bash
+# macOS
+cp ~/Library/Application\ Support/Claude/claude_desktop_config.json \
+   ~/Library/Application\ Support/Claude/claude_desktop_config.json.backup
+```
+
+### 加進 mcpServers 區塊
+
+格式與 Claude Code 的 `settings.json` 相同：
+
+```json
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "npx",
+      "args": ["-y", "notebooklm-mcp@0.4.2"]
+    }
+  }
+}
+```
+
+存檔後需要**完整重啟 Claude Desktop**（見下方「重啟說明」）。
+
+⚠️ **JSON 常見坑**：
+- 物件最後一個成員後面**不要加逗號**
+- 字串用雙引號 `"..."`，不能用單引號
+- 改完可以貼到 [jsonlint.com](https://jsonlint.com/) 驗證語法
+
+---
 
 ## 重啟說明
 
@@ -134,6 +173,55 @@ cp ~/.claude/settings.json ~/.claude/settings.json.backup
 選擇 notebook「研究筆記」
 列出 source 清單
 回答：這本 notebook 裡 X 主題的重點是什麼？
+```
+
+## 安全硬化指南
+
+### 版本管理
+
+**為什麼版本固定？**
+- 防止 npm supply chain 攻擊（如包被惡意修改或 typosquatting）
+- 確保一致的行為和已知的安全狀態
+
+**當前版本：** `notebooklm-mcp@0.4.2`
+
+**升級版本的安全步驟：**
+1. 檢查 [PleasePrompto/notebooklm-mcp 的 GitHub releases](https://github.com/PleasePrompto/notebooklm-mcp/releases) 有無安全修補或重要更新
+2. 在 `~/.claude/settings.json` 或 `~/.codex/config.toml` 手動更新版本號
+3. 重啟工具並驗證功能正常
+4. 若有異常，立即改回舊版本
+
+### Chrome 配置保護
+
+`PleasePrompto/notebooklm-mcp` 使用 Chrome automation 來登入 Google NotebookLM，Google 的認證 Cookie 會存儲在你本機的 Chrome 配置中。
+
+**保護建議：**
+
+1. **使用專用 Chrome 配置**
+   ```bash
+   # 為 NotebookLM 創建獨立的 Chrome 配置，避免混合日常數據
+   # Chrome 會在首次登入時自動建立新配置
+   ```
+
+2. **限制目錄權限**
+   ```bash
+   # macOS / Linux
+   chmod 700 ~/Library/Application\ Support/Google/Chrome/Profile\ 1
+   # 或你使用的 Chrome 配置路徑
+   ```
+
+3. **監控會話**
+   - 若懷疑認證被洩露，立即改變 Google 帳號密碼
+   - 登入 [Google Account Security](https://myaccount.google.com/security) 檢查登入活動
+
+### 速率限制
+
+若使用自動化腳本頻繁調用 NotebookLM，可能觸發 Google 的濫用檢測機制，導致帳號暫時被鎖定。
+
+**建議做法：**
+```javascript
+// 在查詢之間添加延遲
+const MIN_INTERVAL_MS = 2000; // 2 秒最少間隔
 ```
 
 ## 常見問題

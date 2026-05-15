@@ -97,6 +97,53 @@ List my NotebookLM notebooks
 
 請自行評估風險，作者與本技能包對任何資料異動或帳號狀態不負責。
 
+## Chrome 配置安全硬化
+
+### 認識風險
+
+`PleasePrompto/notebooklm-mcp` 使用 Chrome automation 登入 Google NotebookLM。Google 的認證 Cookie 會存儲在你本機的 Chrome 配置目錄中。如果該目錄被他人訪問，他們可能提取你的 Google 認證 Cookie，進而訪問你的 NotebookLM 帳號和其他 Google 服務。
+
+### 保護建議
+
+#### 1. 使用專用 Chrome 配置（推薦）
+
+為 NotebookLM 自動化創建獨立的 Chrome 配置，避免混合日常使用的瀏覽器數據：
+
+```bash
+# 檢查 Chrome 配置目錄位置
+# macOS: ~/Library/Application\ Support/Google/Chrome
+# Linux: ~/.config/google-chrome
+# Windows: %APPDATA%\Google\Chrome\User Data
+
+# 創建新配置（如果未自動創建）
+# Chrome 會在首次登入時自動建立
+```
+
+#### 2. 限制目錄權限
+
+確保 Chrome 配置目錄只有你的用戶可以訪問：
+
+```bash
+chmod 700 ~/Library/Application\ Support/Google/Chrome/Profile\ 1
+# 或其他你使用的 Chrome 配置路徑
+```
+
+#### 3. 監控會話狀態
+
+- 若懷疑認證被洩露，立即改變 Google 帳號密碼
+- 登入 [Google Account Security](https://myaccount.google.com/security) 檢查登入活動
+- 終止異常會話
+
+#### 4. Cookie 提取與 nlm CLI
+
+`jacob-bd/notebooklm-mcp-cli`（`nlm` 命令）需要直接訪問你的 Chrome 配置以提取 Cookie。這是安全的做法（Cookie 不經過第三方伺服器），但仍應遵守上述防護措施。
+
+若要撤銷 `nlm` 的訪問權限，改變 Google 密碼或在 Security 頁面終止所有會話即可。
+
+### 版本固定
+
+MCP server 已固定為 `notebooklm-mcp@0.4.2` 以提高供應鏈安全性。若要升級版本，請在 `~/.claude/settings.json` 或 `~/.codex/config.toml` 中手動更新，並確認上游倉庫沒有安全問題。
+
 ## 依賴的第三方工具（皆為開源）
 
 | 工具 | Repo | 授權 |

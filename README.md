@@ -96,7 +96,7 @@ bash scripts/install.sh
 
 #### Codex 用戶（推薦）
 
-腳本已自動跑 `codex mcp add notebooklm -- npx -y notebooklm-mcp@latest`，**不用手動編輯設定檔**。
+腳本已自動跑 `codex mcp add notebooklm -- npx -y notebooklm-mcp@0.4.2`，**不用手動編輯設定檔**。
 
 驗證：
 

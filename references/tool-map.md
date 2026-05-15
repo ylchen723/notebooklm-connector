@@ -11,7 +11,7 @@
 ### Codex 安裝
 
 ```bash
-codex mcp add notebooklm -- npx -y notebooklm-mcp@latest
+codex mcp add notebooklm -- npx -y notebooklm-mcp@0.4.2
 ```
 
 ### Claude Code 安裝
@@ -23,7 +23,7 @@ codex mcp add notebooklm -- npx -y notebooklm-mcp@latest
   "mcpServers": {
     "notebooklm": {
       "command": "npx",
-      "args": ["-y", "notebooklm-mcp@latest"]
+      "args": ["-y", "notebooklm-mcp@0.4.2"]
     }
   }
 }
@@ -78,7 +78,7 @@ Markdown / PDF / HTML / JSON / CSV / PPTX / MP4 / JSONCanvas / ZIP bundle
 ### 安裝
 
 ```bash
-uv tool install notebooklm-mcp-cli
+uv tool install "notebooklm-mcp-cli==0.1.0"
 ```
 
 ### 常用命令

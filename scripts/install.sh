@@ -37,10 +37,11 @@ echo "============================================================"
 if [ "$HAS_CODEX" -eq 1 ]; then
   echo
   echo ">> 嘗試把 MCP 加到 Codex（會跑 codex mcp add）"
-  echo "   執行: codex mcp add notebooklm -- npx -y notebooklm-mcp@latest"
+  echo "   執行: codex mcp add notebooklm -- npx -y notebooklm-mcp@0.4.2"
   echo "   ⚠️  第一次跑會去 npm 拉 notebooklm-mcp package（30 秒到 2 分鐘，看網速）"
   echo "       看起來像當機其實沒有，請耐心等。下次就快了。"
-  codex mcp add notebooklm -- npx -y notebooklm-mcp@latest || {
+  echo "   ℹ️  版本已固定為 0.4.2（安全考量），若要升級版本請參考 references/mcp-setup.md"
+  codex mcp add notebooklm -- npx -y notebooklm-mcp@0.4.2 || {
     echo "   codex mcp add 失敗（可能已存在或設定衝突），請改手動編輯 ~/.codex/config.toml"
   }
 fi
@@ -54,11 +55,17 @@ if [ "$HAS_CLAUDE" -eq 1 ]; then
      "mcpServers": {
        "notebooklm": {
          "command": "npx",
-         "args": ["-y", "notebooklm-mcp@latest"]
+         "args": ["-y", "notebooklm-mcp@0.4.2"]
        }
      }
    }
 EOF
+  echo
+  echo ">> Claude Desktop 請手動編輯："
+  echo "   macOS: ~/Library/Application Support/Claude/claude_desktop_config.json"
+  echo "   Windows: %APPDATA%\\Claude\\claude_desktop_config.json"
+  echo "   在 mcpServers 區塊加入相同 JSON 片段（同上）"
+  echo
   echo "   完整指引請看 references/mcp-setup.md"
 fi
 
@@ -67,13 +74,16 @@ echo "============================================================"
 echo "[2/3] 可選：安裝 jacob-bd/notebooklm-mcp-cli（提供 nlm 指令）"
 echo "============================================================"
 
+NOTEBOOKLM_MCP_CLI_VERSION="0.1.0"
+
 if [ "$HAS_UV" -eq 1 ]; then
   if uv tool list 2>/dev/null | grep -q "notebooklm-mcp-cli"; then
-    echo "已安裝 notebooklm-mcp-cli，執行升級。"
-    uv tool upgrade notebooklm-mcp-cli || true
+    echo "已安裝 notebooklm-mcp-cli，升級至 ${NOTEBOOKLM_MCP_CLI_VERSION}。"
+    echo "   ℹ️  版本已固定為 ${NOTEBOOKLM_MCP_CLI_VERSION}（安全考量，此工具可直接存取 Chrome Cookie）"
+    uv tool install --force "notebooklm-mcp-cli==${NOTEBOOKLM_MCP_CLI_VERSION}" || true
   else
-    echo "未安裝 notebooklm-mcp-cli，執行安裝。"
-    uv tool install notebooklm-mcp-cli || true
+    echo "未安裝 notebooklm-mcp-cli，安裝版本 ${NOTEBOOKLM_MCP_CLI_VERSION}。"
+    uv tool install "notebooklm-mcp-cli==${NOTEBOOKLM_MCP_CLI_VERSION}" || true
   fi
   echo
   echo "安裝完成後，可用 'which nlm' 查路徑。"

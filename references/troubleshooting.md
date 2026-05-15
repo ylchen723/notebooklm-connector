@@ -75,7 +75,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 - Claude Code：對話裡輸入 `/mcp`，應看到 `notebooklm`
 
 如果重啟後還是沒看到：
-- Codex 用戶：跑 `codex mcp list` 看清單裡到底有沒有，沒有的話手動跑 `codex mcp add notebooklm -- npx -y notebooklm-mcp@latest`
+- Codex 用戶：跑 `codex mcp list` 看清單裡到底有沒有，沒有的話手動跑 `codex mcp add notebooklm -- npx -y notebooklm-mcp@0.4.2`
 - Claude Code 用戶：檢查 `~/.claude/settings.json` 真的有寫進去且 JSON 語法正確（貼到 [jsonlint.com](https://jsonlint.com/) 驗證）
 
 ### `mcp list` 看得到 notebooklm 但呼叫沒反應
@@ -83,7 +83,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 通常是 `npx` 第一次拉 package 慢。手動試：
 
 ```bash
-npx -y notebooklm-mcp@latest --help
+npx -y notebooklm-mcp@0.4.2 --help
 ```
 
 第一次會下載很多依賴，有耐心等。下次就快了。
