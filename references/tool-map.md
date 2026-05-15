@@ -78,7 +78,7 @@ Markdown / PDF / HTML / JSON / CSV / PPTX / MP4 / JSONCanvas / ZIP bundle
 ### 安裝
 
 ```bash
-uv tool install "notebooklm-mcp-cli==0.1.0"
+uv tool install "notebooklm-mcp-cli==0.6.9"
 ```
 
 ### 常用命令

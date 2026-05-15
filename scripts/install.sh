@@ -74,7 +74,7 @@ echo "============================================================"
 echo "[2/3] 可選：安裝 jacob-bd/notebooklm-mcp-cli（提供 nlm 指令）"
 echo "============================================================"
 
-NOTEBOOKLM_MCP_CLI_VERSION="0.1.0"
+NOTEBOOKLM_MCP_CLI_VERSION="0.6.9"
 
 if [ "$HAS_UV" -eq 1 ]; then
   if uv tool list 2>/dev/null | grep -q "notebooklm-mcp-cli"; then
